@@ -619,21 +619,22 @@ st.markdown(f"<style>{CSS}</style>", unsafe_allow_html=True)
 # ─────────────────────────────────────────────────────────────────────────────
 # KEYBOARD SHORTCUT + DARK MODE JS
 # ─────────────────────────────────────────────────────────────────────────────
-components.html("""
+components.html(f"""
 <script>
-(function() {
+(function() {{
+  // Apply dark mode from session state on every render
+  const dark = {'true' if st.session_state.dark else 'false'};
+  const root = window.parent.document.documentElement;
+  root.setAttribute('data-theme', dark ? 'dark' : 'light');
   // Cmd/Ctrl+K → focus search
-  document.addEventListener('keydown', function(e) {
-    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+  window.parent.document.addEventListener('keydown', function(e) {{
+    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {{
       e.preventDefault();
       const inp = window.parent.document.querySelector('input[type="text"]');
       if (inp) inp.focus();
-    }
-  });
-  // Apply saved dark mode preference
-  const dark = localStorage.getItem('la_dark') === '1';
-  if (dark) window.parent.document.documentElement.setAttribute('data-theme','dark');
-})();
+    }}
+  }});
+}})();
 </script>
 """, height=0)
 
@@ -809,11 +810,8 @@ with h1:
 
 with h2:
     st.markdown("<div style='height:24px'></div>", unsafe_allow_html=True)
-    hc1, hc2, hc3 = st.columns([3, 2, 2], gap="small")
+    hc1, hc2 = st.columns([3, 2], gap="small")
     with hc1:
-        st.markdown(f"""<span class="saved-count-pill {saved_active}"
-            onclick="void(0)">{'♥' if n_saved else '♡'} {n_saved} saved</span>""",
-            unsafe_allow_html=True)
         if st.button(
             f"{'♥' if n_saved else '♡'}  {n_saved} saved",
             key="toggle_saved",
@@ -825,16 +823,7 @@ with h2:
         dm_label = "☀  Light" if st.session_state.dark else "◑  Dark"
         if st.button(dm_label, key="dm_toggle", type="secondary"):
             st.session_state.dark = not st.session_state.dark
-            val = "1" if st.session_state.dark else "0"
-            theme = "dark" if st.session_state.dark else "light"
-            components.html(f"""<script>
-              localStorage.setItem('la_dark','{val}');
-              window.parent.document.documentElement.setAttribute('data-theme','{theme}');
-            </script>""", height=0)
             st.rerun()
-    with hc3:
-        # placeholder for alignment
-        st.markdown("")
 
 
 # ─────────────────────────────────────────────────────────────────────────────
