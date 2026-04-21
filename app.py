@@ -184,6 +184,8 @@ div[data-testid="stButton"] > button {
   transition: all var(--transition) !important;
   cursor: pointer !important;
   white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
 }
 div[data-testid="stButton"] > button[kind="primary"] {
   background: var(--accent) !important;
@@ -986,25 +988,27 @@ elif st.session_state.query:
 # LANDING STATE
 # ─────────────────────────────────────────────────────────────────────────────
 else:
-    # Popular topics
+    # Popular topics — 2 rows of 5
     st.markdown('<div class="sec-hd">Popular topics</div>', unsafe_allow_html=True)
-    cols_t = st.columns(len(TOPICS), gap="small")
-    for i, topic in enumerate(TOPICS):
-        with cols_t[i]:
-            if st.button(topic, key=f"tp_{topic}", use_container_width=True, type="secondary"):
-                st.session_state.query = topic.lower()
-                st.rerun()
+    for row_topics in [TOPICS[:5], TOPICS[5:]]:
+        row_cols = st.columns(5, gap="small")
+        for i, topic in enumerate(row_topics):
+            with row_cols[i]:
+                if st.button(topic, key=f"tp_{topic}", use_container_width=True, type="secondary"):
+                    st.session_state.query = topic.lower()
+                    st.rerun()
 
-    # Career paths
+    # Career paths — 2 rows of 5
     st.markdown('<div class="sec-hd">Career paths</div>', unsafe_allow_html=True)
     path_keys = list(SKILL_PATHS.keys())
-    path_cols = st.columns(5, gap="small")
-    for i, pk in enumerate(path_keys[:10]):
-        pd = SKILL_PATHS[pk]
-        with path_cols[i % 5]:
-            if st.button(f"{pd['icon']}  {pd['title']}", key=f"lp_{pk}", use_container_width=True, type="secondary"):
-                st.session_state.query = pk
-                st.rerun()
+    for row_keys in [path_keys[:5], path_keys[5:10]]:
+        row_cols = st.columns(5, gap="small")
+        for i, pk in enumerate(row_keys):
+            pd = SKILL_PATHS[pk]
+            with row_cols[i]:
+                if st.button(f"{pd['icon']}  {pd['title']}", key=f"lp_{pk}", use_container_width=True, type="secondary"):
+                    st.session_state.query = pk
+                    st.rerun()
 
     # Trending picks
     st.markdown('<div class="sec-hd">Trending now</div>', unsafe_allow_html=True)
