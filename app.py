@@ -625,7 +625,7 @@ components.html(f"""
 <script>
 (function() {{
   // Apply dark mode from session state on every render
-  const dark = {'true' if st.session_state.dark else 'false'};
+  const dark = {'true' if st.session_state.get('dark', False) else 'false'};
   const root = window.parent.document.documentElement;
   root.setAttribute('data-theme', dark ? 'dark' : 'light');
   // Cmd/Ctrl+K → focus search
