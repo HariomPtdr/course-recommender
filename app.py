@@ -1025,8 +1025,8 @@ else:
 
     # Trending picks
     st.markdown('<div class="sec-hd">Trending now</div>', unsafe_allow_html=True)
-        trending = []
-        for tq in ["machine learning beginners","react javascript","data science","guitar beginners"]:
-            r = rec.search(tq, top_k=1)
-            if r: trending.append(r[0])
-        render_grid(trending, prefix="trend")
+    trending = []
+    for tq in ["machine learning beginners","react javascript","data science","guitar beginners"]:
+        r = rec.search(tq, top_k=1)
+        if r: trending.append(r[0])
+    render_grid(trending, prefix="trend")
