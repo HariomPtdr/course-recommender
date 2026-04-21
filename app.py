@@ -998,17 +998,6 @@ else:
                     st.session_state.query = topic.lower()
                     st.rerun()
 
-    # Career paths — 2 rows of 5
-    st.markdown('<div class="sec-hd">Career paths</div>', unsafe_allow_html=True)
-    path_keys = list(SKILL_PATHS.keys())
-    for row_keys in [path_keys[:5], path_keys[5:10]]:
-        row_cols = st.columns(5, gap="small")
-        for i, pk in enumerate(row_keys):
-            pd = SKILL_PATHS[pk]
-            with row_cols[i]:
-                if st.button(f"{pd['icon']}  {pd['title']}", key=f"lp_{pk}", use_container_width=True, type="secondary"):
-                    st.session_state.query = pk
-                    st.rerun()
 
     # Trending picks
     st.markdown('<div class="sec-hd">Trending now</div>', unsafe_allow_html=True)
