@@ -313,7 +313,7 @@ elif st.session_state.query:
     path = rec.detect_skill_path(q)
     if path:
         steps_html = "".join(
-            f'<div class="path-step"><div class="step-num">{i+1}</div>{s["name"]}</div>'
+            f'<div class="path-step"><div class="step-num">{i+1}</div>{s["stage_name"]}</div>'
             for i, s in enumerate(path["stages"])
         )
         st.markdown(f"""
