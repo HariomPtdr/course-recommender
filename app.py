@@ -1023,42 +1023,8 @@ else:
                 st.session_state.query = pk
                 st.rerun()
 
-    # Browse by category
-    st.markdown('<div class="sec-hd">Browse by category</div>', unsafe_allow_html=True)
-    categories = sorted(set(c.get("category","Other") for c in courses))
-
-    sel = st.session_state.selected_cat
-    cat_rows = [categories[i:i+6] for i in range(0, len(categories), 6)]
-    for row in cat_rows:
-        row_cols = st.columns(len(row), gap="small")
-        for j, cat in enumerate(row):
-            icon  = CAT_ICONS.get(cat, "◆")
-            count = sum(1 for c in courses if c.get("category") == cat)
-            active_cls = "active" if sel == cat else ""
-            with row_cols[j]:
-                st.markdown(f"""
-                <div class="cat-card {active_cls}">
-                  <div class="cat-icon">{icon}</div>
-                  <div class="cat-label">{cat}</div>
-                  <div class="cat-count">{count} courses</div>
-                </div>""", unsafe_allow_html=True)
-                if st.button(" ", key=f"cat_{cat}", use_container_width=True,
-                             help=cat, type="primary" if sel == cat else "secondary"):
-                    st.session_state.selected_cat = None if sel == cat else cat
-                    st.rerun()
-
-    # Category results
-    if sel:
-        cat_courses = sorted(
-            [c for c in courses if c.get("category") == sel],
-            key=lambda x: x["rating"], reverse=True
-        )
-        icon = CAT_ICONS.get(sel, "◆")
-        st.markdown(f'<div class="sec-hd">{icon} {sel}</div>', unsafe_allow_html=True)
-        render_grid([{**c,"score": c["rating"]/5} for c in cat_courses], prefix="cat")
-    else:
-        # Trending picks
-        st.markdown('<div class="sec-hd">Trending now</div>', unsafe_allow_html=True)
+    # Trending picks
+    st.markdown('<div class="sec-hd">Trending now</div>', unsafe_allow_html=True)
         trending = []
         for tq in ["machine learning beginners","react javascript","data science","guitar beginners"]:
             r = rec.search(tq, top_k=1)
