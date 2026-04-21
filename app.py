@@ -999,12 +999,6 @@ elif st.session_state.query:
 else:
     # Popular topics
     st.markdown('<div class="sec-hd">Popular topics</div>', unsafe_allow_html=True)
-    chips_html = "".join(
-        f'<span class="topic-chip" onclick="void(0)">{t}</span>'
-        for t in TOPICS
-    )
-    st.markdown(f'<div class="topic-chips">{chips_html}</div>', unsafe_allow_html=True)
-
     cols_t = st.columns(len(TOPICS), gap="small")
     for i, topic in enumerate(TOPICS):
         with cols_t[i]:
